@@ -30,8 +30,7 @@ std::unique_ptr<Layout> SymbolLayerFactory::createLayout(const LayoutParameters&
     return std::make_unique<SymbolLayout>(parameters.bucketParameters,
                                           group,
                                           std::move(tileLayer),
-                                          parameters.imageDependencies,
-                                          parameters.glyphDependencies);
+                                          parameters);
 }
 
 std::unique_ptr<RenderLayer> SymbolLayerFactory::createRenderLayer(Immutable<style::Layer::Impl> impl) noexcept {

@@ -33,7 +33,7 @@ public:
     PatternLayout(const BucketParameters& parameters,
                   const std::vector<Immutable<style::LayerProperties>>& group,
                   std::unique_ptr<GeometryTileLayer> sourceLayer_,
-                  ImageDependencies& patternDependencies)
+                  const LayoutParameters& layoutParameters)
                   : sourceLayer(std::move(sourceLayer_)),
                     zoom(parameters.tileID.overscaledZ),
                     overscaling(parameters.tileID.overscaleFactor()),
@@ -55,8 +55,8 @@ public:
                 hasPattern = true;
             } else if (!constantPattern.to.id().empty()){
                 hasPattern = true;
-                patternDependencies.emplace(constantPattern.to.id(), ImageType::Pattern);
-                patternDependencies.emplace(constantPattern.from.id(), ImageType::Pattern);
+                layoutParameters.imageDependencies.emplace(constantPattern.to.id(), ImageType::Pattern);
+                layoutParameters.imageDependencies.emplace(constantPattern.from.id(), ImageType::Pattern);
             }
             layerPropertiesMap.emplace(layerId, layerProperties);
         }
@@ -82,9 +82,9 @@ public:
                             const auto mid = patternProperty.evaluate(*feature, zoom, PatternPropertyType::defaultValue());
                             const auto max = patternProperty.evaluate(*feature, zoom + 1, PatternPropertyType::defaultValue());
 
-                            patternDependencies.emplace(min.to.id(), ImageType::Pattern);
-                            patternDependencies.emplace(mid.to.id(), ImageType::Pattern);
-                            patternDependencies.emplace(max.to.id(), ImageType::Pattern);
+                            layoutParameters.imageDependencies.emplace(min.to.id(), ImageType::Pattern);
+                            layoutParameters.imageDependencies.emplace(mid.to.id(), ImageType::Pattern);
+                            layoutParameters.imageDependencies.emplace(max.to.id(), ImageType::Pattern);
                             patternDependencyMap.emplace(layerId, PatternDependency {min.to.id(), mid.to.id(), max.to.id()});
 
                         }

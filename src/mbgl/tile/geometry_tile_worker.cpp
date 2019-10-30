@@ -116,10 +116,11 @@ GeometryTileWorker::~GeometryTileWorker() = default;
    completed parse.
 */
 
-void GeometryTileWorker::setData(std::unique_ptr<const GeometryTileData> data_, bool resetLayers_, uint64_t correlationID_) {
+void GeometryTileWorker::setData(std::unique_ptr<const GeometryTileData> data_, std::set<std::string> availableImages_, bool resetLayers_, uint64_t correlationID_) {
     try {
         data = std::move(data_);
         correlationID = correlationID_;
+        availableImages = std::move(availableImages_);
         if (resetLayers_) layers = nullopt;
 
         switch (state) {
@@ -365,7 +366,7 @@ void GeometryTileWorker::parse() {
         // and either immediately create a bucket if no images/glyphs are used, or the Layout is stored until
         // the images/glyphs are available to add the features to the buckets.
         if (leaderImpl.getTypeInfo()->layout == LayerTypeInfo::Layout::Required) {
-            std::unique_ptr<Layout> layout = LayerManager::get()->createLayout({parameters, glyphDependencies, imageDependencies}, std::move(geometryLayer), group);
+            std::unique_ptr<Layout> layout = LayerManager::get()->createLayout({parameters, glyphDependencies, imageDependencies, availableImages}, std::move(geometryLayer), group);
             if (layout->hasDependencies()) {
                 layouts.push_back(std::move(layout));
             } else {

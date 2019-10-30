@@ -81,8 +81,7 @@ inline Immutable<style::SymbolLayoutProperties::PossiblyEvaluated> createLayout(
 SymbolLayout::SymbolLayout(const BucketParameters& parameters,
                            const std::vector<Immutable<style::LayerProperties>>& layers,
                            std::unique_ptr<GeometryTileLayer> sourceLayer_,
-                           ImageDependencies& imageDependencies,
-                           GlyphDependencies& glyphDependencies)
+                           const LayoutParameters& layoutParameters)
     : bucketLeaderID(layers.front()->baseImpl->id),
       sourceLayer(std::move(sourceLayer_)),
       overscaling(parameters.tileID.overscaleFactor()),
@@ -168,7 +167,7 @@ SymbolLayout::SymbolLayout(const BucketParameters& parameters,
             // Loop through all characters of this text and collect unique codepoints.
             for (std::size_t j = 0; j < ft.formattedText->length(); j++) {
                 const auto& sectionFontStack = formatted.sections[ft.formattedText->getSectionIndex(j)].fontStack;
-                GlyphIDs& dependencies = glyphDependencies[sectionFontStack ? *sectionFontStack : baseFontStack];
+                GlyphIDs& dependencies = layoutParameters.glyphDependencies[sectionFontStack ? *sectionFontStack : baseFontStack];
                 char16_t codePoint = ft.formattedText->getCharCodeAt(j);
                 dependencies.insert(codePoint);
                 if (canVerticalizeText || (allowVerticalPlacement && ft.formattedText->allowsVerticalWritingMode())) {
@@ -181,7 +180,7 @@ SymbolLayout::SymbolLayout(const BucketParameters& parameters,
 
         if (hasIcon) {
             ft.icon = layout->evaluate<IconImage>(zoom, ft);
-            imageDependencies.emplace(ft.icon->id(), ImageType::Icon);
+            layoutParameters.imageDependencies.emplace(ft.icon->id(), ImageType::Icon);
         }
 
         if (ft.formattedText || ft.icon) {

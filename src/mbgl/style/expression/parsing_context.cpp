@@ -194,7 +194,7 @@ ParseResult ParsingContext::parse(const Convertible& value, optional<TypeAnnotat
         const type::Type actual = (*parsed)->getType();
         if ((*expected == type::String || *expected == type::Number || *expected == type::Boolean || *expected == type::Object || expected->is<type::Array>()) && actual == type::Value) {
             parsed = { annotate(std::move(*parsed), *expected, typeAnnotationOption.value_or(TypeAnnotationOption::assert)) };
-        } else if ((*expected == type::Color || *expected == type::Formatted) && (actual == type::Value || actual == type::String)) {
+        } else if ((*expected == type::Color || *expected == type::Formatted || *expected == type::Image) && (actual == type::Value || actual == type::String)) {
             parsed = { annotate(std::move(*parsed), *expected, typeAnnotationOption.value_or(TypeAnnotationOption::coerce)) };
         } else {
             checkType((*parsed)->getType());
@@ -206,8 +206,9 @@ ParseResult ParsingContext::parse(const Convertible& value, optional<TypeAnnotat
 
     // If an expression's arguments are all constant, we can evaluate
     // it immediately and replace it with a literal value in the
-    // parsed result.
-    if ((*parsed)->getKind() != Kind::Literal && isConstant(**parsed)) {
+    // parsed/compiled result. Expressions that expect an image should
+    // not be resolved here so we can later get the available images.
+    if ((*parsed)->getKind() != Kind::Literal && (*parsed)->getType() != type::Image && isConstant(**parsed)) {
         EvaluationContext params(nullptr);
         EvaluationResult evaluated((*parsed)->evaluate(params));
         if (!evaluated) {

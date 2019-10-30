@@ -35,8 +35,9 @@ global.expressionType = function (property) {
         case 'number':
         case 'enum':
             return 'NumberType';
+        case 'image':
+            return 'ImageType';
         case 'string':
-        case 'image': // TODO: replace once we implement image expressions
             return 'StringType';
         case 'color':
             return `ColorType`;
@@ -66,10 +67,11 @@ global.evaluatedType = function (property) {
     return 'bool';
   case 'number':
     return 'float';
+  case 'resolvedImage':
+      return 'expression::Image';
   case 'formatted':
     return 'expression::Formatted';
   case 'string':
-  case 'image': // TODO: replace once we implement image expressions
     return 'std::string';
   case 'enum':
     return (isLightProperty(property) ? 'Light' : '') + `${camelize(property.name)}Type`;
@@ -168,7 +170,7 @@ global.defaultValue = function (property) {
   }
   case 'formatted':
   case 'string':
-  case 'image': // TODO: replace once we implement image expressions
+  case 'resolvedImage':
     return JSON.stringify(property.default || "");
   case 'enum':
     if (property.default === undefined) {

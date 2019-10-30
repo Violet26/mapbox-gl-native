@@ -37,6 +37,8 @@ class Formatted {
 public:
     Formatted() = default;
     
+    Formatted(std::string str) : Formatted(str.c_str()) {}
+
     Formatted(const char* plainU8String) {
         sections.emplace_back(std::string(plainU8String), nullopt, nullopt, nullopt);
     }

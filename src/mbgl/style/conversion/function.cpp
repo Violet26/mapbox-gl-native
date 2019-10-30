@@ -309,9 +309,13 @@ static optional<std::unique_ptr<Expression>> convertLiteral(type::Type type, con
                 literal(Formatted(result->c_str()));
         },
         [&] (const type::ImageType&) -> optional<std::unique_ptr<Expression>> {
-            assert(false); // No properties use this type.
-            // TODO: fix for icon-image
-            return nullopt;
+            auto result = convert<std::string>(value, error);
+            if (!result) {
+                return nullopt;
+            }
+            return convertTokens ?
+                std::make_unique<ImageExpression>(convertTokenStringToExpression(*result)) :
+                literal(Image(result->c_str()));
         }
     );
 }

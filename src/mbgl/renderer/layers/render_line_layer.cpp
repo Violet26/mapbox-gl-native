@@ -9,6 +9,7 @@
 #include <mbgl/programs/line_program.hpp>
 #include <mbgl/geometry/line_atlas.hpp>
 #include <mbgl/tile/tile.hpp>
+#include <mbgl/style/expression/image.hpp>
 #include <mbgl/style/layers/line_layer_impl.hpp>
 #include <mbgl/gfx/cull_face_mode.hpp>
 #include <mbgl/geometry/feature_index.hpp>
@@ -168,11 +169,11 @@ void RenderLineLayer::render(PaintParameters& parameters) {
                  });
 
         } else if (!unevaluated.get<LinePattern>().isUndefined()) {
-            const auto& linePatternValue = evaluated.get<LinePattern>().constantOr(Faded<std::basic_string<char>>{ "", ""});
+            const auto& linePatternValue = evaluated.get<LinePattern>().constantOr(Faded<expression::Image>{"", ""});
             const Size& texsize = tile.getIconAtlasTexture().size;
 
-            optional<ImagePosition> posA = tile.getPattern(linePatternValue.from);
-            optional<ImagePosition> posB = tile.getPattern(linePatternValue.to);
+            optional<ImagePosition> posA = tile.getPattern(linePatternValue.from.id());
+            optional<ImagePosition> posB = tile.getPattern(linePatternValue.to.id());
 
             draw(parameters.programs.getLineLayerPrograms().linePattern,
                  LinePatternProgram::layoutUniformValues(

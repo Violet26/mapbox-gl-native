@@ -109,15 +109,15 @@ void SymbolLayer::setIconIgnorePlacement(const PropertyValue<bool>& value) {
     baseImpl = std::move(impl_);
     observer->onLayerChanged(*this);
 }
-PropertyValue<std::string> SymbolLayer::getDefaultIconImage() {
+PropertyValue<expression::Image> SymbolLayer::getDefaultIconImage() {
     return IconImage::defaultValue();
 }
 
-const PropertyValue<std::string>& SymbolLayer::getIconImage() const {
+const PropertyValue<expression::Image>& SymbolLayer::getIconImage() const {
     return impl().layout.get<IconImage>();
 }
 
-void SymbolLayer::setIconImage(const PropertyValue<std::string>& value) {
+void SymbolLayer::setIconImage(const PropertyValue<expression::Image>& value) {
     if (value == getIconImage())
         return;
     auto impl_ = mutableImpl();
@@ -1684,7 +1684,7 @@ optional<Error> SymbolLayer::setLayoutProperty(const std::string& name, const Co
     
     if (property == Property::IconImage) {
         Error error;
-        optional<PropertyValue<std::string>> typedValue = convert<PropertyValue<std::string>>(value, error, true, true);
+        optional<PropertyValue<expression::Image>> typedValue = convert<PropertyValue<expression::Image>>(value, error, true, true);
         if (!typedValue) {
             return error;
         }

@@ -317,15 +317,15 @@ TransitionOptions LineLayer::getLineOpacityTransition() const {
     return impl().paint.template get<LineOpacity>().options;
 }
 
-PropertyValue<std::string> LineLayer::getDefaultLinePattern() {
+PropertyValue<expression::Image> LineLayer::getDefaultLinePattern() {
     return { "" };
 }
 
-const PropertyValue<std::string>& LineLayer::getLinePattern() const {
+const PropertyValue<expression::Image>& LineLayer::getLinePattern() const {
     return impl().paint.template get<LinePattern>().value;
 }
 
-void LineLayer::setLinePattern(const PropertyValue<std::string>& value) {
+void LineLayer::setLinePattern(const PropertyValue<expression::Image>& value) {
     if (value == getLinePattern())
         return;
     auto impl_ = mutableImpl();
@@ -576,7 +576,7 @@ optional<Error> LineLayer::setPaintProperty(const std::string& name, const Conve
     
     if (property == Property::LinePattern) {
         Error error;
-        optional<PropertyValue<std::string>> typedValue = convert<PropertyValue<std::string>>(value, error, true, false);
+        optional<PropertyValue<expression::Image>> typedValue = convert<PropertyValue<expression::Image>>(value, error, true, false);
         if (!typedValue) {
             return error;
         }

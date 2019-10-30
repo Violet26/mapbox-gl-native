@@ -32,8 +32,8 @@ struct FillOutlineColor : DataDrivenPaintProperty<Color, attributes::outline_col
     static Color defaultValue() { return {}; }
 };
 
-struct FillPattern : CrossFadedDataDrivenPaintProperty<std::string, attributes::pattern_to, uniforms::pattern_to, attributes::pattern_from, uniforms::pattern_from> {
-    static std::string defaultValue() { return ""; }
+struct FillPattern : CrossFadedDataDrivenPaintProperty<expression::Image, attributes::pattern_to, uniforms::pattern_to, attributes::pattern_from, uniforms::pattern_from> {
+    static expression::Image defaultValue() { return ""; }
 };
 
 struct FillTranslate : PaintProperty<std::array<float, 2>> {

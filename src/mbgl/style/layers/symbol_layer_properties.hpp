@@ -31,9 +31,9 @@ struct IconIgnorePlacement : LayoutProperty<bool> {
     static bool defaultValue() { return false; }
 };
 
-struct IconImage : DataDrivenLayoutProperty<std::string> {
+struct IconImage : DataDrivenLayoutProperty<expression::Image> {
     static constexpr const char *name() { return "icon-image"; }
-    static std::string defaultValue() { return ""; }
+    static expression::Image defaultValue() { return ""; }
 };
 
 struct IconKeepUpright : LayoutProperty<bool> {

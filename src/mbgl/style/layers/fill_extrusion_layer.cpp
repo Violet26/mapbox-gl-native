@@ -171,15 +171,15 @@ TransitionOptions FillExtrusionLayer::getFillExtrusionOpacityTransition() const 
     return impl().paint.template get<FillExtrusionOpacity>().options;
 }
 
-PropertyValue<std::string> FillExtrusionLayer::getDefaultFillExtrusionPattern() {
+PropertyValue<expression::Image> FillExtrusionLayer::getDefaultFillExtrusionPattern() {
     return { "" };
 }
 
-const PropertyValue<std::string>& FillExtrusionLayer::getFillExtrusionPattern() const {
+const PropertyValue<expression::Image>& FillExtrusionLayer::getFillExtrusionPattern() const {
     return impl().paint.template get<FillExtrusionPattern>().value;
 }
 
-void FillExtrusionLayer::setFillExtrusionPattern(const PropertyValue<std::string>& value) {
+void FillExtrusionLayer::setFillExtrusionPattern(const PropertyValue<expression::Image>& value) {
     if (value == getFillExtrusionPattern())
         return;
     auto impl_ = mutableImpl();
@@ -382,7 +382,7 @@ optional<Error> FillExtrusionLayer::setPaintProperty(const std::string& name, co
     
     if (property == Property::FillExtrusionPattern) {
         Error error;
-        optional<PropertyValue<std::string>> typedValue = convert<PropertyValue<std::string>>(value, error, true, false);
+        optional<PropertyValue<expression::Image>> typedValue = convert<PropertyValue<expression::Image>>(value, error, true, false);
         if (!typedValue) {
             return error;
         }

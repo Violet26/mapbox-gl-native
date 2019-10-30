@@ -10,6 +10,7 @@
 #include <mbgl/style/layers/symbol_layer.hpp>
 #include <mbgl/style/layers/symbol_layer_impl.hpp>
 #include <mbgl/style/expression/dsl.hpp>
+#include <mbgl/style/expression/image.hpp>
 
 #include <boost/function_output_iterator.hpp>
 
@@ -184,7 +185,7 @@ void AnnotationManager::updateStyle() {
 
         using namespace expression::dsl;
         layer->setSourceLayer(PointLayerID);
-        layer->setIconImage(PropertyExpression<std::string>(concat(vec(literal(SourceID + "."), toString(get("sprite"))))));
+        layer->setIconImage(PropertyExpression<expression::Image>(concat(vec(literal(SourceID + "."), toString(get("sprite"))))));
         layer->setIconAllowOverlap(true);
         layer->setIconIgnorePlacement(true);
 

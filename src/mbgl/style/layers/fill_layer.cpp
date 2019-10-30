@@ -171,15 +171,15 @@ TransitionOptions FillLayer::getFillOutlineColorTransition() const {
     return impl().paint.template get<FillOutlineColor>().options;
 }
 
-PropertyValue<std::string> FillLayer::getDefaultFillPattern() {
+PropertyValue<expression::Image> FillLayer::getDefaultFillPattern() {
     return { "" };
 }
 
-const PropertyValue<std::string>& FillLayer::getFillPattern() const {
+const PropertyValue<expression::Image>& FillLayer::getFillPattern() const {
     return impl().paint.template get<FillPattern>().value;
 }
 
-void FillLayer::setFillPattern(const PropertyValue<std::string>& value) {
+void FillLayer::setFillPattern(const PropertyValue<expression::Image>& value) {
     if (value == getFillPattern())
         return;
     auto impl_ = mutableImpl();
@@ -351,7 +351,7 @@ optional<Error> FillLayer::setPaintProperty(const std::string& name, const Conve
     
     if (property == Property::FillPattern) {
         Error error;
-        optional<PropertyValue<std::string>> typedValue = convert<PropertyValue<std::string>>(value, error, true, false);
+        optional<PropertyValue<expression::Image>> typedValue = convert<PropertyValue<expression::Image>>(value, error, true, false);
         if (!typedValue) {
             return error;
         }

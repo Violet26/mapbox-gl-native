@@ -7,6 +7,7 @@
 #include <mbgl/programs/programs.hpp>
 #include <mbgl/programs/fill_extrusion_program.hpp>
 #include <mbgl/tile/tile.hpp>
+#include <mbgl/style/expression/image.hpp>
 #include <mbgl/style/layers/fill_extrusion_layer_impl.hpp>
 #include <mbgl/geometry/feature_index.hpp>
 #include <mbgl/util/math.hpp>
@@ -171,7 +172,7 @@ void RenderFillExtrusionLayer::render(PaintParameters& parameters) {
         }
     } else {
         // Draw textured extrusions
-        const auto fillPatternValue = evaluated.get<FillExtrusionPattern>().constantOr(mbgl::Faded<std::basic_string<char> >{"", ""});
+        const auto fillPatternValue = evaluated.get<FillExtrusionPattern>().constantOr(mbgl::Faded<expression::Image>{"", ""});
         auto drawTiles = [&](const gfx::StencilMode& stencilMode_, const gfx::ColorMode& colorMode_, const std::string& name) {
             for (const RenderTile& tile : *renderTiles) {
                 const LayerRenderData* renderData = getRenderDataForPass(tile, parameters.pass);
@@ -179,8 +180,8 @@ void RenderFillExtrusionLayer::render(PaintParameters& parameters) {
                     continue;
                 }
                 auto& bucket = static_cast<FillExtrusionBucket&>(*renderData->bucket);
-                optional<ImagePosition> patternPosA = tile.getPattern(fillPatternValue.from);
-                optional<ImagePosition> patternPosB = tile.getPattern(fillPatternValue.to);
+                optional<ImagePosition> patternPosA = tile.getPattern(fillPatternValue.from.id());
+                optional<ImagePosition> patternPosB = tile.getPattern(fillPatternValue.to.id());
 
                 draw(
                     parameters.programs.getFillExtrusionLayerPrograms().fillExtrusionPattern,

@@ -13,10 +13,14 @@ namespace expression {
 
 class Image {
 public:
-Image(std::string imageID, bool available);
+Image() = default;
+Image(const char* imageID);
+Image(std::string imageID);
+explicit Image(std::string imageID, bool available);
     bool operator==(const Image& ) const;
     std::string toString() const;
     const std::string& id() const;
+    bool empty() const;
 
 private:
     std::string imageID;
@@ -26,12 +30,16 @@ private:
 } // namespace expression
 
 namespace conversion {
-using mbgl::style::expression::Image;
 
 template <>
-struct Converter<Image> {
+struct Converter<expression::Image> {
 public:
-    optional<Image> operator()(const Convertible& value, Error& error) const;
+    optional<expression::Image> operator()(const Convertible& value, Error& error) const;
+};
+
+template <>
+struct ValueFactory<expression::Image> {
+    static Value make(const expression::Image& image) { return image.toString(); }
 };
 
 } // namespace conversion

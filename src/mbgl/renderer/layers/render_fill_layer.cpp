@@ -7,6 +7,7 @@
 #include <mbgl/programs/programs.hpp>
 #include <mbgl/programs/fill_program.hpp>
 #include <mbgl/tile/tile.hpp>
+#include <mbgl/style/expression/image.hpp>
 #include <mbgl/style/layers/fill_layer_impl.hpp>
 #include <mbgl/geometry/feature_index.hpp>
 #include <mbgl/gfx/renderer_backend.hpp>
@@ -171,9 +172,9 @@ void RenderFillLayer::render(PaintParameters& parameters) {
             const auto& evaluated = getEvaluated<FillLayerProperties>(renderData->layerProperties);
             const auto& crossfade = getCrossfade<FillLayerProperties>(renderData->layerProperties);
 
-            const auto& fillPatternValue = evaluated.get<FillPattern>().constantOr(Faded<std::basic_string<char>>{"", ""});
-            optional<ImagePosition> patternPosA = tile.getPattern(fillPatternValue.from);
-            optional<ImagePosition> patternPosB = tile.getPattern(fillPatternValue.to);
+            const auto& fillPatternValue = evaluated.get<FillPattern>().constantOr(Faded<expression::Image>{"", ""});
+            optional<ImagePosition> patternPosA = tile.getPattern(fillPatternValue.from.id());
+            optional<ImagePosition> patternPosB = tile.getPattern(fillPatternValue.to.id());
 
             auto draw = [&] (auto& programInstance,
                              const auto& drawMode,

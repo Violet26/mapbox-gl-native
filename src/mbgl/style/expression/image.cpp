@@ -11,6 +11,13 @@ Image::Image(std::string imageID_, bool available_)
     , available(available_)
 {}
 
+Image::Image(std::string imageID_) : Image(std::move(imageID_), false) {
+}
+
+Image::Image(const char* imageID_) : Image(std::string(imageID_)) {
+    assert(imageID_);
+}
+
 bool Image::operator==(const Image& other) const {
     return imageID == other.imageID && available == other.available;
 }
@@ -21,6 +28,10 @@ std::string Image::toString() const {
 
 const std::string& Image::id() const {
     return imageID;
+}
+
+bool Image::empty() const {
+    return imageID.empty();
 }
 
 } // namespace expression

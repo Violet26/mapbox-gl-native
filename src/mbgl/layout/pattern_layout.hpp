@@ -4,6 +4,7 @@
 #include <mbgl/geometry/feature_index.hpp>
 #include <mbgl/renderer/render_layer.hpp>
 #include <mbgl/style/layer_properties.hpp>
+#include <mbgl/style/expression/image.hpp>
 
 namespace mbgl {
 
@@ -47,15 +48,15 @@ public:
             const std::string& layerId = layerProperties->baseImpl->id;
             const auto& evaluated = style::getEvaluated<LayerPropertiesType>(layerProperties);
             const auto patternProperty = evaluated.template get<PatternPropertyType>();
-            const auto constantPattern = patternProperty.constantOr(Faded<std::basic_string<char> >{ "", ""});
+            const auto constantPattern = patternProperty.constantOr(Faded<style::expression::Image>{"", ""});
             // determine if layer group has any layers that use *-pattern property and add
             // constant pattern dependencies.
             if (!patternProperty.isConstant()) {
                 hasPattern = true;
-            } else if (!constantPattern.to.empty()){
+            } else if (!constantPattern.to.id().empty()){
                 hasPattern = true;
-                patternDependencies.emplace(constantPattern.to, ImageType::Pattern);
-                patternDependencies.emplace(constantPattern.from, ImageType::Pattern);
+                patternDependencies.emplace(constantPattern.to.id(), ImageType::Pattern);
+                patternDependencies.emplace(constantPattern.from.id(), ImageType::Pattern);
             }
             layerPropertiesMap.emplace(layerId, layerProperties);
         }
@@ -81,10 +82,10 @@ public:
                             const auto mid = patternProperty.evaluate(*feature, zoom, PatternPropertyType::defaultValue());
                             const auto max = patternProperty.evaluate(*feature, zoom + 1, PatternPropertyType::defaultValue());
 
-                            patternDependencies.emplace(min.to, ImageType::Pattern);
-                            patternDependencies.emplace(mid.to, ImageType::Pattern);
-                            patternDependencies.emplace(max.to, ImageType::Pattern);
-                            patternDependencyMap.emplace(layerId, PatternDependency {min.to, mid.to, max.to});
+                            patternDependencies.emplace(min.to.id(), ImageType::Pattern);
+                            patternDependencies.emplace(mid.to.id(), ImageType::Pattern);
+                            patternDependencies.emplace(max.to.id(), ImageType::Pattern);
+                            patternDependencyMap.emplace(layerId, PatternDependency {min.to.id(), mid.to.id(), max.to.id()});
 
                         }
                     }

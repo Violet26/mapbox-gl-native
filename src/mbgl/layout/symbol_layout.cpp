@@ -181,7 +181,7 @@ SymbolLayout::SymbolLayout(const BucketParameters& parameters,
 
         if (hasIcon) {
             ft.icon = layout->evaluate<IconImage>(zoom, ft);
-            imageDependencies.emplace(*ft.icon, ImageType::Icon);
+            imageDependencies.emplace(ft.icon->id(), ImageType::Icon);
         }
 
         if (ft.formattedText || ft.icon) {
@@ -448,11 +448,11 @@ void SymbolLayout::prepareSymbols(const GlyphMap& glyphMap, const GlyphPositions
         // if feature has icon, get sprite atlas position
         SymbolContent iconType{SymbolContent::None};
         if (feature.icon) {
-            auto image = imageMap.find(*feature.icon);
+            auto image = imageMap.find(feature.icon->id());
             if (image != imageMap.end()) {
                 iconType = SymbolContent::IconRGBA;
                 shapedIcon = PositionedIcon::shapeIcon(
-                    imagePositions.at(*feature.icon),
+                    imagePositions.at(feature.icon->id()),
                     layout->evaluate<IconOffset>(zoom, feature),
                     layout->evaluate<IconAnchor>(zoom, feature),
                     layout->evaluate<IconRotate>(zoom, feature) * util::DEG2RAD);

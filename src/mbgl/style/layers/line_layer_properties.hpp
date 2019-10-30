@@ -68,8 +68,8 @@ struct LineOpacity : DataDrivenPaintProperty<float, attributes::opacity, uniform
     static float defaultValue() { return 1; }
 };
 
-struct LinePattern : CrossFadedDataDrivenPaintProperty<std::string, attributes::pattern_to, uniforms::pattern_to, attributes::pattern_from, uniforms::pattern_from> {
-    static std::string defaultValue() { return ""; }
+struct LinePattern : CrossFadedDataDrivenPaintProperty<expression::Image, attributes::pattern_to, uniforms::pattern_to, attributes::pattern_from, uniforms::pattern_from> {
+    static expression::Image defaultValue() { return ""; }
 };
 
 struct LineTranslate : PaintProperty<std::array<float, 2>> {

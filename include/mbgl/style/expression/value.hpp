@@ -2,6 +2,7 @@
 
 #include <mbgl/style/expression/collator.hpp>
 #include <mbgl/style/expression/formatted.hpp>
+#include <mbgl/style/expression/image.hpp>
 #include <mbgl/style/expression/type.hpp>
 #include <mbgl/style/position.hpp>
 #include <mbgl/style/types.hpp>
@@ -27,6 +28,7 @@ using ValueBase = variant<
     Color,
     Collator,
     Formatted,
+    Image,
     mapbox::util::recursive_wrapper<std::vector<Value>>,
     mapbox::util::recursive_wrapper<std::unordered_map<std::string, Value>>>;
 struct Value : ValueBase {

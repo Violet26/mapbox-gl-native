@@ -15,6 +15,7 @@
 #include <mbgl/style/expression/comparison.hpp>
 #include <mbgl/style/expression/number_format.hpp>
 #include <mbgl/style/expression/format_expression.hpp>
+#include <mbgl/style/expression/image_expression.hpp>
 #include <mbgl/style/expression/interpolate.hpp>
 #include <mbgl/style/expression/length.hpp>
 #include <mbgl/style/expression/let.hpp>
@@ -117,7 +118,7 @@ MAPBOX_ETERNAL_CONSTEXPR const auto expressionRegistry =
         {"coalesce", Coalesce::parse},
         {"collator", CollatorExpression::parse},
         {"format", FormatExpression::parse},
-        {"image", Assertion::parse}, // TODO: replace once we implement image expressions
+        {"image", ImageExpression::parse},
         {"interpolate", parseInterpolate},
         {"length", Length::parse},
         {"let", Let::parse},

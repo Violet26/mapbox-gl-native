@@ -15,6 +15,7 @@ type::Type typeOf(const Value& value) {
         [&](const Color&) -> type::Type { return type::Color; },
         [&](const Collator&) -> type::Type { return type::Collator; },
         [&](const Formatted&) -> type::Type { return type::Formatted; },
+        [&](const Image&) -> type::Type { return type::Image; },
         [&](const NullValue&) -> type::Type { return type::Null; },
         [&](const std::unordered_map<std::string, Value>&) -> type::Type { return type::Object; },
         [&](const std::vector<Value>& arr) -> type::Type {
@@ -66,6 +67,9 @@ void writeJSON(rapidjson::Writer<rapidjson::StringBuffer>& writer, const Value& 
             // Serialization strategy for Formatted objects is to return the constant
             // expression that would generate them.
             mbgl::style::conversion::stringify(writer, f);
+        },
+        [&] (const Image& i) {
+            mbgl::style::conversion::stringify(writer, i);
         },
         [&] (const std::vector<Value>& arr) {
             writer.StartArray();
@@ -174,6 +178,12 @@ mbgl::Value ValueConverter<mbgl::Value>::fromExpressionValue(const Value& value)
                 serialized.emplace_back(options);
             }
             return serialized;
+        },
+        [&](const Image& i) -> mbgl::Value {
+            return std::vector<mbgl::Value>{
+                std::string("image"),
+                i.toString()
+            };
         },
         [&](const std::vector<Value>& values)->mbgl::Value {
             std::vector<mbgl::Value> converted;
@@ -302,6 +312,7 @@ template <> type::Type valueTypeToExpressionType<std::string>() { return type::S
 template <> type::Type valueTypeToExpressionType<Color>() { return type::Color; }
 template <> type::Type valueTypeToExpressionType<Collator>() { return type::Collator; }
 template <> type::Type valueTypeToExpressionType<Formatted>() { return type::Formatted; }
+template <> type::Type valueTypeToExpressionType<Image>() { return type::Image; }
 template <> type::Type valueTypeToExpressionType<std::unordered_map<std::string, Value>>() { return type::Object; }
 template <> type::Type valueTypeToExpressionType<std::vector<Value>>() { return type::Array(type::Value); }
 

@@ -1,0 +1,57 @@
+#include <mbgl/style/expression/image.hpp>
+#include <mbgl/style/conversion_impl.hpp>
+#include <mbgl/style/conversion/constant.hpp>
+
+namespace mbgl {
+namespace style {
+namespace expression {
+
+Image::Image(std::string imageID_, bool available_)
+    : imageID(std::move(imageID_))
+    , available(available_)
+{}
+
+bool Image::operator==(const Image& other) const {
+    return imageID == other.imageID && available == other.available;
+}
+
+std::string Image::toString() const {
+    return imageID;
+}
+
+const std::string& Image::id() const {
+    return imageID;
+}
+
+} // namespace expression
+
+namespace conversion {
+using namespace mbgl::style::expression;
+optional<Image> Converter<Image>::operator()(const Convertible& value, Error& error) const {
+    if (isArray(value)) {
+        Convertible imageParameters = arrayMember(value, 0);
+        std::size_t imageParametersLength = arrayLength(imageParameters);
+        if (imageParametersLength < 1) {
+            error.message = "Image has to contain an ID.";
+            return nullopt;
+        }
+
+        optional<std::string> imageID = toString(arrayMember(imageParameters, 0));
+        if (!imageID) {
+            error.message = "Image has to contain an ID.";
+            return nullopt;
+        }
+
+        return Image(*imageID, false);
+    } else if (optional<std::string> result = toString(value)) {
+        return Image(*result, false);
+    } else {
+        error.message = "Image must be plain string or array type.";
+        return nullopt;
+    }
+}
+
+} // namespace conversion
+} // namespace style
+} // namespace mbgl
+

@@ -73,6 +73,11 @@ struct FormattedType {
     bool operator==(const FormattedType&) const { return true; }
 };
 
+struct ImageType {
+    constexpr ImageType() {}; // NOLINT
+    std::string getName() const { return "image"; }
+    bool operator==(const ImageType&) const { return true; }
+};
 
 constexpr NullType Null;
 constexpr NumberType Number;
@@ -84,6 +89,7 @@ constexpr ObjectType Object;
 constexpr CollatorType Collator;
 constexpr FormattedType Formatted;
 constexpr ErrorType Error;
+constexpr ImageType Image;
 
 struct Array;
 
@@ -98,7 +104,8 @@ using Type = variant<
     mapbox::util::recursive_wrapper<Array>,
     CollatorType,
     FormattedType,
-    ErrorType>;
+    ErrorType,
+    ImageType>;
 
 struct Array {
     explicit Array(Type itemType_) : itemType(std::move(itemType_)) {}

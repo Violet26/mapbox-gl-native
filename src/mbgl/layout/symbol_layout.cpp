@@ -140,7 +140,7 @@ SymbolLayout::SymbolLayout(const BucketParameters& parameters,
         ft.index = i;
 
         if (hasText) {
-            auto formatted = layout->evaluate<TextField>(zoom, ft);
+            auto formatted = layout->evaluate<TextField>(zoom, ft, layoutParameters.availableImages);
             auto textTransform = layout->evaluate<TextTransform>(zoom, ft);
             FontStack baseFontStack = layout->evaluate<TextFont>(zoom, ft);
 
@@ -179,7 +179,7 @@ SymbolLayout::SymbolLayout(const BucketParameters& parameters,
         }
 
         if (hasIcon) {
-            ft.icon = layout->evaluate<IconImage>(zoom, ft);
+            ft.icon = layout->evaluate<IconImage>(zoom, ft, layoutParameters.availableImages);
             layoutParameters.imageDependencies.emplace(ft.icon->id(), ImageType::Icon);
         }
 

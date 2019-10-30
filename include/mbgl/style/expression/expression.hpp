@@ -28,7 +28,8 @@ public:
     EvaluationContext() = default;
     explicit EvaluationContext(float zoom_) : zoom(zoom_) {}
     explicit EvaluationContext(GeometryTileFeature const * feature_) : feature(feature_) {}
-    EvaluationContext(float zoom_, GeometryTileFeature const * feature_) :
+    EvaluationContext(float zoom_,
+                      GeometryTileFeature const * feature_) :
         zoom(zoom_), feature(feature_)
     {}
     EvaluationContext(optional<mbgl::Value> accumulated_, GeometryTileFeature const * feature_) :
@@ -50,6 +51,11 @@ public:
         return *this;
     };
 
+    EvaluationContext& withAvailableImages(const std::set<std::string>* availableImages_) noexcept {
+        availableImages = availableImages_;
+        return *this;
+    };
+
     optional<float> zoom;
     optional<mbgl::Value> accumulated;
     GeometryTileFeature const * feature = nullptr;
@@ -57,6 +63,7 @@ public:
     // Contains formatted section object, std::unordered_map<std::string, Value>.
     const Value* formattedSection = nullptr;
     const FeatureState* featureState = nullptr;
+    const std::set<std::string>* availableImages = nullptr;
 };
 
 template <typename T>

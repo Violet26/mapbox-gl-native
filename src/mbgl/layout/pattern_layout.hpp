@@ -78,15 +78,14 @@ public:
                         if (!patternProperty.isConstant()) {
                             // For layers with non-data-constant pattern properties, evaluate their expression and add
                             // the patterns to the dependency vector
-                            const auto min = patternProperty.evaluate(*feature, zoom - 1, PatternPropertyType::defaultValue());
-                            const auto mid = patternProperty.evaluate(*feature, zoom, PatternPropertyType::defaultValue());
-                            const auto max = patternProperty.evaluate(*feature, zoom + 1, PatternPropertyType::defaultValue());
+                            const auto min = patternProperty.evaluate(*feature, zoom - 1, layoutParameters.availableImages, PatternPropertyType::defaultValue());
+                            const auto mid = patternProperty.evaluate(*feature, zoom, layoutParameters.availableImages, PatternPropertyType::defaultValue());
+                            const auto max = patternProperty.evaluate(*feature, zoom + 1, layoutParameters.availableImages, PatternPropertyType::defaultValue());
 
                             layoutParameters.imageDependencies.emplace(min.to.id(), ImageType::Pattern);
                             layoutParameters.imageDependencies.emplace(mid.to.id(), ImageType::Pattern);
                             layoutParameters.imageDependencies.emplace(max.to.id(), ImageType::Pattern);
                             patternDependencyMap.emplace(layerId, PatternDependency {min.to.id(), mid.to.id(), max.to.id()});
-
                         }
                     }
                 }

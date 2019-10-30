@@ -18,7 +18,7 @@ Image(const char* imageID);
 Image(std::string imageID);
 explicit Image(std::string imageID, bool available);
     bool operator==(const Image& ) const;
-    std::string toString() const;
+    mbgl::Value serialize() const;
     const std::string& id() const;
     bool empty() const;
 
@@ -39,7 +39,7 @@ public:
 
 template <>
 struct ValueFactory<expression::Image> {
-    static Value make(const expression::Image& image) { return image.toString(); }
+    static Value make(const expression::Image& image) { return image.serialize(); }
 };
 
 } // namespace conversion

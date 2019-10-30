@@ -42,6 +42,7 @@ std::string toString(const Value& value) {
         [](const NullValue&) { return std::string(); },
         [](const Color& c) { return c.stringify(); }, // avoid quoting
         [](const Formatted& f) { return f.toString(); },
+        [](const Image& i) { return i.id(); },
         [](const std::string& s) { return s; }, // avoid quoting
         [](const auto& v_) { return stringify(v_); }
     );
@@ -180,10 +181,7 @@ mbgl::Value ValueConverter<mbgl::Value>::fromExpressionValue(const Value& value)
             return serialized;
         },
         [&](const Image& i) -> mbgl::Value {
-            return std::vector<mbgl::Value>{
-                std::string("image"),
-                i.toString()
-            };
+            return i.serialize();
         },
         [&](const std::vector<Value>& values)->mbgl::Value {
             std::vector<mbgl::Value> converted;

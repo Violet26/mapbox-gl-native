@@ -22,8 +22,8 @@ bool Image::operator==(const Image& other) const {
     return imageID == other.imageID && available == other.available;
 }
 
-std::string Image::toString() const {
-    return imageID;
+mbgl::Value Image::serialize() const {
+    return mapbox::base::ValueArray {"image", imageID};
 }
 
 const std::string& Image::id() const {

@@ -14,6 +14,7 @@ EvaluationResult toBoolean(const Value& v) {
         [&] (const std::string& s) { return s.length() > 0; },
         [&] (bool b) { return b; },
         [&] (const NullValue&) { return false; },
+        [&] (const Image& i) { return i.isAvailable(); },
         [&] (const auto&) { return true; }
     );
 }

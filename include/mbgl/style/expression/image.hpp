@@ -20,6 +20,7 @@ explicit Image(std::string imageID, bool available);
     bool operator==(const Image& ) const;
     mbgl::Value serialize() const;
     const std::string& id() const;
+    bool isAvailable() const;
     bool empty() const;
 
 private:

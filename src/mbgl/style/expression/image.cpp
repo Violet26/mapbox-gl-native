@@ -30,6 +30,10 @@ const std::string& Image::id() const {
     return imageID;
 }
 
+bool Image::isAvailable() const {
+    return available;
+}
+
 bool Image::empty() const {
     return imageID.empty();
 }

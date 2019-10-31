@@ -60,8 +60,8 @@ EvaluationResult ImageExpression::evaluate(const EvaluationContext& ctx) const {
         return EvaluationError({ "Could not evaluate ID for 'image' expression." });
     }
 
-    // TODO: evaluate based on available image list.
-    return Image(*evaluatedImageID, true);
+    bool available = ctx.availableImages && ctx.availableImages->count(*evaluatedImageID);
+    return Image(*evaluatedImageID, available);
 }
 
 } // namespace expression

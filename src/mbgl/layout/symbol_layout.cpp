@@ -167,7 +167,8 @@ SymbolLayout::SymbolLayout(const BucketParameters& parameters,
             // Loop through all characters of this text and collect unique codepoints.
             for (std::size_t j = 0; j < ft.formattedText->length(); j++) {
                 const auto& sectionFontStack = formatted.sections[ft.formattedText->getSectionIndex(j)].fontStack;
-                GlyphIDs& dependencies = layoutParameters.glyphDependencies[sectionFontStack ? *sectionFontStack : baseFontStack];
+                GlyphIDs& dependencies =
+                    layoutParameters.glyphDependencies[sectionFontStack ? *sectionFontStack : baseFontStack];
                 char16_t codePoint = ft.formattedText->getCharCodeAt(j);
                 dependencies.insert(codePoint);
                 if (canVerticalizeText || (allowVerticalPlacement && ft.formattedText->allowsVerticalWritingMode())) {
@@ -450,11 +451,10 @@ void SymbolLayout::prepareSymbols(const GlyphMap& glyphMap, const GlyphPositions
             auto image = imageMap.find(feature.icon->id());
             if (image != imageMap.end()) {
                 iconType = SymbolContent::IconRGBA;
-                shapedIcon = PositionedIcon::shapeIcon(
-                    imagePositions.at(feature.icon->id()),
-                    layout->evaluate<IconOffset>(zoom, feature),
-                    layout->evaluate<IconAnchor>(zoom, feature),
-                    layout->evaluate<IconRotate>(zoom, feature) * util::DEG2RAD);
+                shapedIcon = PositionedIcon::shapeIcon(imagePositions.at(feature.icon->id()),
+                                                       layout->evaluate<IconOffset>(zoom, feature),
+                                                       layout->evaluate<IconAnchor>(zoom, feature),
+                                                       layout->evaluate<IconRotate>(zoom, feature) * util::DEG2RAD);
                 if (image->second->sdf) {
                     iconType = SymbolContent::IconSDF;
                 }

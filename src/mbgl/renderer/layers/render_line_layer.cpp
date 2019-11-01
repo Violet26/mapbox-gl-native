@@ -1,21 +1,21 @@
-#include <mbgl/renderer/layers/render_line_layer.hpp>
-#include <mbgl/renderer/buckets/line_bucket.hpp>
-#include <mbgl/renderer/render_tile.hpp>
-#include <mbgl/renderer/render_source.hpp>
-#include <mbgl/renderer/upload_parameters.hpp>
-#include <mbgl/renderer/paint_parameters.hpp>
-#include <mbgl/renderer/image_manager.hpp>
-#include <mbgl/programs/programs.hpp>
-#include <mbgl/programs/line_program.hpp>
+#include <mbgl/geometry/feature_index.hpp>
 #include <mbgl/geometry/line_atlas.hpp>
-#include <mbgl/tile/tile.hpp>
+#include <mbgl/gfx/cull_face_mode.hpp>
+#include <mbgl/programs/line_program.hpp>
+#include <mbgl/programs/programs.hpp>
+#include <mbgl/renderer/buckets/line_bucket.hpp>
+#include <mbgl/renderer/image_manager.hpp>
+#include <mbgl/renderer/layers/render_line_layer.hpp>
+#include <mbgl/renderer/paint_parameters.hpp>
+#include <mbgl/renderer/render_source.hpp>
+#include <mbgl/renderer/render_tile.hpp>
+#include <mbgl/renderer/upload_parameters.hpp>
 #include <mbgl/style/expression/image.hpp>
 #include <mbgl/style/layers/line_layer_impl.hpp>
-#include <mbgl/gfx/cull_face_mode.hpp>
-#include <mbgl/geometry/feature_index.hpp>
-#include <mbgl/util/math.hpp>
-#include <mbgl/util/intersection_tests.hpp>
 #include <mbgl/tile/geometry_tile.hpp>
+#include <mbgl/tile/tile.hpp>
+#include <mbgl/util/intersection_tests.hpp>
+#include <mbgl/util/math.hpp>
 
 namespace mbgl {
 

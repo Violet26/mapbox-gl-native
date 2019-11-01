@@ -36,7 +36,7 @@ struct FormattedSection {
 class Formatted {
 public:
     Formatted() = default;
-    
+
     Formatted(std::string str) : Formatted(str.c_str()) {}
 
     Formatted(const char* plainU8String) {

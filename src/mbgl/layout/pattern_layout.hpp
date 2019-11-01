@@ -1,10 +1,10 @@
 #pragma once
+#include <mbgl/geometry/feature_index.hpp>
 #include <mbgl/layout/layout.hpp>
 #include <mbgl/renderer/bucket_parameters.hpp>
-#include <mbgl/geometry/feature_index.hpp>
 #include <mbgl/renderer/render_layer.hpp>
-#include <mbgl/style/layer_properties.hpp>
 #include <mbgl/style/expression/image.hpp>
+#include <mbgl/style/layer_properties.hpp>
 
 namespace mbgl {
 
@@ -34,10 +34,10 @@ public:
                   const std::vector<Immutable<style::LayerProperties>>& group,
                   std::unique_ptr<GeometryTileLayer> sourceLayer_,
                   const LayoutParameters& layoutParameters)
-                  : sourceLayer(std::move(sourceLayer_)),
-                    zoom(parameters.tileID.overscaledZ),
-                    overscaling(parameters.tileID.overscaleFactor()),
-                    hasPattern(false) {
+        : sourceLayer(std::move(sourceLayer_)),
+          zoom(parameters.tileID.overscaledZ),
+          overscaling(parameters.tileID.overscaleFactor()),
+          hasPattern(false) {
         assert(!group.empty());
         auto leaderLayerProperties = staticImmutableCast<LayerPropertiesType>(group.front());
         layout = leaderLayerProperties->layerImpl().layout.evaluate(PropertyEvaluationParameters(zoom));
@@ -53,7 +53,7 @@ public:
             // constant pattern dependencies.
             if (!patternProperty.isConstant()) {
                 hasPattern = true;
-            } else if (!constantPattern.to.id().empty()){
+            } else if (!constantPattern.to.id().empty()) {
                 hasPattern = true;
                 layoutParameters.imageDependencies.emplace(constantPattern.to.id(), ImageType::Pattern);
                 layoutParameters.imageDependencies.emplace(constantPattern.from.id(), ImageType::Pattern);
@@ -78,14 +78,22 @@ public:
                         if (!patternProperty.isConstant()) {
                             // For layers with non-data-constant pattern properties, evaluate their expression and add
                             // the patterns to the dependency vector
-                            const auto min = patternProperty.evaluate(*feature, zoom - 1, layoutParameters.availableImages, PatternPropertyType::defaultValue());
-                            const auto mid = patternProperty.evaluate(*feature, zoom, layoutParameters.availableImages, PatternPropertyType::defaultValue());
-                            const auto max = patternProperty.evaluate(*feature, zoom + 1, layoutParameters.availableImages, PatternPropertyType::defaultValue());
+                            const auto min = patternProperty.evaluate(*feature,
+                                                                      zoom - 1,
+                                                                      layoutParameters.availableImages,
+                                                                      PatternPropertyType::defaultValue());
+                            const auto mid = patternProperty.evaluate(
+                                *feature, zoom, layoutParameters.availableImages, PatternPropertyType::defaultValue());
+                            const auto max = patternProperty.evaluate(*feature,
+                                                                      zoom + 1,
+                                                                      layoutParameters.availableImages,
+                                                                      PatternPropertyType::defaultValue());
 
                             layoutParameters.imageDependencies.emplace(min.to.id(), ImageType::Pattern);
                             layoutParameters.imageDependencies.emplace(mid.to.id(), ImageType::Pattern);
                             layoutParameters.imageDependencies.emplace(max.to.id(), ImageType::Pattern);
-                            patternDependencyMap.emplace(layerId, PatternDependency {min.to.id(), mid.to.id(), max.to.id()});
+                            patternDependencyMap.emplace(layerId,
+                                                         PatternDependency{min.to.id(), mid.to.id(), max.to.id()});
                         }
                     }
                 }

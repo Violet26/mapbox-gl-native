@@ -9,14 +9,12 @@ namespace style {
 namespace expression {
 
 EvaluationResult toBoolean(const Value& v) {
-    return v.match(
-        [&] (double f) { return static_cast<bool>(f); },
-        [&] (const std::string& s) { return s.length() > 0; },
-        [&] (bool b) { return b; },
-        [&] (const NullValue&) { return false; },
-        [&] (const Image& i) { return i.isAvailable(); },
-        [&] (const auto&) { return true; }
-    );
+    return v.match([&](double f) { return static_cast<bool>(f); },
+                   [&](const std::string& s) { return s.length() > 0; },
+                   [&](bool b) { return b; },
+                   [&](const NullValue&) { return false; },
+                   [&](const Image& i) { return i.isAvailable(); },
+                   [&](const auto&) { return true; });
 }
 
 EvaluationResult toNumber(const Value& v) {
@@ -123,7 +121,7 @@ mbgl::Value Coercion::serialize() const {
         serialized.emplace_back(std::unordered_map<std::string, mbgl::Value>());
         return serialized;
     } else if (getType().is<type::ImageType>()) {
-        std::vector<mbgl::Value> serialized{{ std::string("image") }};
+        std::vector<mbgl::Value> serialized{{std::string("image")}};
         serialized.push_back(inputs[0]->serialize());
         return serialized;
     } else {
@@ -159,11 +157,13 @@ ParseResult Coercion::parse(const Convertible& value, ParsingContext& ctx) {
     auto it = types.find(*toString(arrayMember(value, 0)));
     assert(it != types.end());
 
-    if ((it->second == type::Boolean || it->second == type::String || it->second == type::Formatted || it->second == type::Image) && length != 2) {
+    if ((it->second == type::Boolean || it->second == type::String || it->second == type::Formatted ||
+         it->second == type::Image) &&
+        length != 2) {
         ctx.error("Expected one argument.");
         return ParseResult();
     }
-    
+
     /**
      * Special form for error-coalescing coercion expressions "to-number",
      * "to-color".  Since these coercions can fail at runtime, they accept multiple

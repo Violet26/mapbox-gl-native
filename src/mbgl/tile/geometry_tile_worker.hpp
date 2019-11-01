@@ -39,7 +39,10 @@ public:
     ~GeometryTileWorker();
 
     void setLayers(std::vector<Immutable<style::LayerProperties>>, uint64_t correlationID);
-    void setData(std::unique_ptr<const GeometryTileData>, std::set<std::string> availableImages, bool resetLayers, uint64_t correlationID);
+    void setData(std::unique_ptr<const GeometryTileData>,
+                 std::set<std::string> availableImages,
+                 bool resetLayers,
+                 uint64_t correlationID);
     void setShowCollisionBoxes(bool showCollisionBoxes_, uint64_t correlationID_);
     
     void onGlyphsAvailable(GlyphMap glyphs);

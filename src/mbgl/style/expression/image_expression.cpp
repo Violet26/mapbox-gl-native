@@ -1,16 +1,15 @@
 #include <mbgl/style/conversion_impl.hpp>
-#include <mbgl/style/expression/image_expression.hpp>
 #include <mbgl/style/expression/image.hpp>
+#include <mbgl/style/expression/image_expression.hpp>
 
 namespace mbgl {
 namespace style {
 namespace expression {
 
 ImageExpression::ImageExpression(std::unique_ptr<Expression> imageID_)
-    : Expression(Kind::ImageExpression, type::Image)
-    , imageID(std::move(imageID_)) {
-        assert(imageID);
-    }
+    : Expression(Kind::ImageExpression, type::Image), imageID(std::move(imageID_)) {
+    assert(imageID);
+}
 
 using namespace mbgl::style::conversion;
 
@@ -44,7 +43,7 @@ bool ImageExpression::operator==(const Expression& e) const {
 }
 
 mbgl::Value ImageExpression::serialize() const {
-    std::vector<mbgl::Value> serialized{{ getOperator() }};
+    std::vector<mbgl::Value> serialized{{getOperator()}};
     serialized.push_back(imageID->serialize());
     return serialized;
 }
@@ -57,7 +56,7 @@ EvaluationResult ImageExpression::evaluate(const EvaluationContext& ctx) const {
 
     optional<std::string> evaluatedImageID = toString(*imageIDResult);
     if (!evaluatedImageID) {
-        return EvaluationError({ "Could not evaluate ID for 'image' expression." });
+        return EvaluationError({"Could not evaluate ID for 'image' expression."});
     }
 
     bool available = ctx.availableImages && ctx.availableImages->count(*evaluatedImageID);

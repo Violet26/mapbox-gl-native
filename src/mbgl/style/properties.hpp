@@ -189,12 +189,8 @@ public:
                           const T& defaultValue,
                           const std::set<std::string>& availableImages) {
             return v.match(
-                [&] (const T& t) {
-                    return t;
-                },
-                [&] (const PropertyExpression<T>& t) {
-                    return t.evaluate(z, feature, availableImages, defaultValue);
-                });
+                [&](const T& t) { return t; },
+                [&](const PropertyExpression<T>& t) { return t.evaluate(z, feature, availableImages, defaultValue); });
         }
 
         template <class T>

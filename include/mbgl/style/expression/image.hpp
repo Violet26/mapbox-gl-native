@@ -4,8 +4,8 @@
 #include <mbgl/util/color.hpp>
 #include <mbgl/util/optional.hpp>
 
-#include <vector>
 #include <string>
+#include <vector>
 
 namespace mbgl {
 namespace style {
@@ -13,11 +13,11 @@ namespace expression {
 
 class Image {
 public:
-Image() = default;
-Image(const char* imageID);
-Image(std::string imageID);
-explicit Image(std::string imageID, bool available);
-    bool operator==(const Image& ) const;
+    Image() = default;
+    Image(const char* imageID);
+    Image(std::string imageID);
+    explicit Image(std::string imageID, bool available);
+    bool operator==(const Image&) const;
     mbgl::Value serialize() const;
     const std::string& id() const;
     bool isAvailable() const;

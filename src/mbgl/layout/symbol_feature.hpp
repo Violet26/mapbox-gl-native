@@ -1,9 +1,9 @@
 #pragma once
 
+#include <mbgl/style/expression/image.hpp>
+#include <mbgl/text/tagged_string.hpp>
 #include <mbgl/tile/geometry_tile_data.hpp>
 #include <mbgl/util/optional.hpp>
-#include <mbgl/text/tagged_string.hpp>
-#include <mbgl/style/expression/image.hpp>
 
 #include <array>
 #include <string>

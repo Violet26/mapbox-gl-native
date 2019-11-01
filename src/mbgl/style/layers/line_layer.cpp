@@ -576,7 +576,8 @@ optional<Error> LineLayer::setPaintProperty(const std::string& name, const Conve
     
     if (property == Property::LinePattern) {
         Error error;
-        optional<PropertyValue<expression::Image>> typedValue = convert<PropertyValue<expression::Image>>(value, error, true, false);
+        optional<PropertyValue<expression::Image>> typedValue =
+            convert<PropertyValue<expression::Image>>(value, error, true, false);
         if (!typedValue) {
             return error;
         }

@@ -93,7 +93,10 @@ public:
     }
 
     template <class Feature>
-    Faded<T> evaluate(const Feature& feature, float zoom, const std::set<std::string>& availableImages, T defaultValue) const {
+    Faded<T> evaluate(const Feature& feature,
+                      float zoom,
+                      const std::set<std::string>& availableImages,
+                      T defaultValue) const {
         return this->match(
             [&] (const Faded<T>& constant_) { return constant_; },
             [&] (const style::PropertyExpression<T>& expression) {

@@ -1,14 +1,14 @@
 #include <mbgl/style/conversion/function.hpp>
 #include <mbgl/style/conversion/position.hpp>
 #include <mbgl/style/conversion_impl.hpp>
+#include <mbgl/style/expression/case.hpp>
 #include <mbgl/style/expression/dsl.hpp>
 #include <mbgl/style/expression/dsl_impl.hpp>
-#include <mbgl/style/expression/step.hpp>
-#include <mbgl/style/expression/interpolate.hpp>
-#include <mbgl/style/expression/match.hpp>
-#include <mbgl/style/expression/case.hpp>
 #include <mbgl/style/expression/format_expression.hpp>
 #include <mbgl/style/expression/image_expression.hpp>
+#include <mbgl/style/expression/interpolate.hpp>
+#include <mbgl/style/expression/match.hpp>
+#include <mbgl/style/expression/step.hpp>
 #include <mbgl/util/string.hpp>
 
 #include <cassert>
@@ -154,8 +154,7 @@ template optional<PropertyExpression<Formatted>>
     convertFunctionToExpression<Formatted>(const Convertible&, Error&, bool);
 template optional<PropertyExpression<std::vector<TextWritingModeType>>>
     convertFunctionToExpression<std::vector<TextWritingModeType>>(const Convertible&, Error&, bool);
-template optional<PropertyExpression<Image>>
-    convertFunctionToExpression<Image>(const Convertible&, Error&, bool);
+template optional<PropertyExpression<Image>> convertFunctionToExpression<Image>(const Convertible&, Error&, bool);
 
 // Ad-hoc Converters for double and int64_t. We should replace float with double wholesale,
 // and promote the int64_t Converter to general use (and it should check that the input is
@@ -209,35 +208,35 @@ static bool interpolatable(type::Type type) {
 
 static optional<std::unique_ptr<Expression>> convertLiteral(type::Type type, const Convertible& value, Error& error, bool convertTokens = false) {
     return type.match(
-        [&] (const type::NumberType&) -> optional<std::unique_ptr<Expression>> {
+        [&](const type::NumberType&) -> optional<std::unique_ptr<Expression>> {
             auto result = convert<float>(value, error);
             if (!result) {
                 return nullopt;
             }
             return literal(double(*result));
         },
-        [&] (const type::BooleanType&) -> optional<std::unique_ptr<Expression>> {
+        [&](const type::BooleanType&) -> optional<std::unique_ptr<Expression>> {
             auto result = convert<bool>(value, error);
             if (!result) {
                 return nullopt;
             }
             return literal(*result);
         },
-        [&] (const type::StringType&) -> optional<std::unique_ptr<Expression>> {
+        [&](const type::StringType&) -> optional<std::unique_ptr<Expression>> {
             auto result = convert<std::string>(value, error);
             if (!result) {
                 return nullopt;
             }
             return convertTokens ? convertTokenStringToExpression(*result) : literal(*result);
         },
-        [&] (const type::ColorType&) -> optional<std::unique_ptr<Expression>> {
+        [&](const type::ColorType&) -> optional<std::unique_ptr<Expression>> {
             auto result = convert<Color>(value, error);
             if (!result) {
                 return nullopt;
             }
             return literal(*result);
         },
-        [&] (const type::Array& array) -> optional<std::unique_ptr<Expression>> {
+        [&](const type::Array& array) -> optional<std::unique_ptr<Expression>> {
             if (!isArray(value)) {
                 error.message = "value must be an array";
                 return nullopt;
@@ -279,27 +278,27 @@ static optional<std::unique_ptr<Expression>> convertLiteral(type::Type type, con
                 }
             );
         },
-        [&] (const type::NullType&) -> optional<std::unique_ptr<Expression>> {
+        [&](const type::NullType&) -> optional<std::unique_ptr<Expression>> {
             assert(false); // No properties use this type.
             return nullopt;
         },
-        [&] (const type::ObjectType&) -> optional<std::unique_ptr<Expression>> {
+        [&](const type::ObjectType&) -> optional<std::unique_ptr<Expression>> {
             assert(false); // No properties use this type.
             return nullopt;
         },
-        [&] (const type::ErrorType&) -> optional<std::unique_ptr<Expression>> {
+        [&](const type::ErrorType&) -> optional<std::unique_ptr<Expression>> {
             assert(false); // No properties use this type.
             return nullopt;
         },
-        [&] (const type::ValueType&) -> optional<std::unique_ptr<Expression>> {
+        [&](const type::ValueType&) -> optional<std::unique_ptr<Expression>> {
             assert(false); // No properties use this type.
             return nullopt;
         },
-        [&] (const type::CollatorType&) -> optional<std::unique_ptr<Expression>> {
+        [&](const type::CollatorType&) -> optional<std::unique_ptr<Expression>> {
             assert(false); // No properties use this type.
             return nullopt;
         },
-        [&] (const type::FormattedType&) -> optional<std::unique_ptr<Expression>> {
+        [&](const type::FormattedType&) -> optional<std::unique_ptr<Expression>> {
             auto result = convert<std::string>(value, error);
             if (!result) {
                 return nullopt;
@@ -308,16 +307,14 @@ static optional<std::unique_ptr<Expression>> convertLiteral(type::Type type, con
                 convertTokenStringToFormatExpression(*result) :
                 literal(Formatted(result->c_str()));
         },
-        [&] (const type::ImageType&) -> optional<std::unique_ptr<Expression>> {
+        [&](const type::ImageType&) -> optional<std::unique_ptr<Expression>> {
             auto result = convert<std::string>(value, error);
             if (!result) {
                 return nullopt;
             }
-            return convertTokens ?
-                std::make_unique<ImageExpression>(convertTokenStringToExpression(*result)) :
-                literal(Image(result->c_str()));
-        }
-    );
+            return convertTokens ? std::make_unique<ImageExpression>(convertTokenStringToExpression(*result))
+                                 : literal(Image(result->c_str()));
+        });
 }
 
 static optional<std::map<double, std::unique_ptr<Expression>>> convertStops(type::Type type,

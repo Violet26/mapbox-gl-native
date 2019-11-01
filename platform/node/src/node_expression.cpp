@@ -35,17 +35,15 @@ void NodeExpression::Init(v8::Local<v8::Object> target) {
 }
 
 type::Type parseType(v8::Local<v8::Object> type) {
-    static std::unordered_map<std::string, type::Type> types = {
-        {"string", type::String},
-        {"number", type::Number},
-        {"boolean", type::Boolean},
-        {"object", type::Object},
-        {"color", type::Color},
-        {"value", type::Value},
-        {"formatted", type::Formatted},
-        {"number-format", type::String},
-        {"resolvedImage", type::Image}
-    };
+    static std::unordered_map<std::string, type::Type> types = {{"string", type::String},
+                                                                {"number", type::Number},
+                                                                {"boolean", type::Boolean},
+                                                                {"object", type::Object},
+                                                                {"color", type::Color},
+                                                                {"value", type::Value},
+                                                                {"formatted", type::Formatted},
+                                                                {"number-format", type::String},
+                                                                {"resolvedImage", type::Image}};
 
     v8::Local<v8::Value> v8kind = Nan::Get(type, Nan::New("kind").ToLocalChecked()).ToLocalChecked();
     std::string kind(*v8::String::Utf8Value(v8kind));
@@ -224,9 +222,7 @@ struct ToValue {
         return scope.Escape(result);
     }
 
-    v8::Local<v8::Value> operator()(const Image& image) {
-        return toJS(image.serialize());
-    }
+    v8::Local<v8::Value> operator()(const Image& image) { return toJS(image.serialize()); }
 };
 
 v8::Local<v8::Value> toJS(const Value& value) {

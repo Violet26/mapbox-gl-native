@@ -28,10 +28,7 @@ public:
     EvaluationContext() = default;
     explicit EvaluationContext(float zoom_) : zoom(zoom_) {}
     explicit EvaluationContext(GeometryTileFeature const * feature_) : feature(feature_) {}
-    EvaluationContext(float zoom_,
-                      GeometryTileFeature const * feature_) :
-        zoom(zoom_), feature(feature_)
-    {}
+    EvaluationContext(float zoom_, GeometryTileFeature const* feature_) : zoom(zoom_), feature(feature_) {}
     EvaluationContext(optional<mbgl::Value> accumulated_, GeometryTileFeature const * feature_) :
         accumulated(std::move(accumulated_)), feature(feature_)
     {}
@@ -180,7 +177,7 @@ public:
 
     Kind getKind() const { return kind; };
     type::Type getType() const { return type; };
-    
+
     EvaluationResult evaluate(optional<float> zoom,
                               const Feature& feature,
                               optional<double> colorRampParameter,

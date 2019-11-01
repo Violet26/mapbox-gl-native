@@ -208,7 +208,8 @@ optional<Error> BackgroundLayer::setPaintProperty(const std::string& name, const
     
     if (property == Property::BackgroundPattern) {
         Error error;
-        optional<PropertyValue<expression::Image>> typedValue = convert<PropertyValue<expression::Image>>(value, error, false, false);
+        optional<PropertyValue<expression::Image>> typedValue =
+            convert<PropertyValue<expression::Image>>(value, error, false, false);
         if (!typedValue) {
             return error;
         }

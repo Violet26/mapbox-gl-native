@@ -1684,7 +1684,8 @@ optional<Error> SymbolLayer::setLayoutProperty(const std::string& name, const Co
     
     if (property == Property::IconImage) {
         Error error;
-        optional<PropertyValue<expression::Image>> typedValue = convert<PropertyValue<expression::Image>>(value, error, true, true);
+        optional<PropertyValue<expression::Image>> typedValue =
+            convert<PropertyValue<expression::Image>>(value, error, true, true);
         if (!typedValue) {
             return error;
         }

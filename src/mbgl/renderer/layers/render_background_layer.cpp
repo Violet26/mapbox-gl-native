@@ -105,8 +105,10 @@ void RenderBackgroundLayer::render(PaintParameters& parameters) {
     const auto& evaluated = static_cast<const BackgroundLayerProperties&>(*evaluatedProperties).evaluated;
     const auto& crossfade = static_cast<const BackgroundLayerProperties&>(*evaluatedProperties).crossfade;
     if (!evaluated.get<BackgroundPattern>().to.empty()) {
-        optional<ImagePosition> imagePosA = parameters.patternAtlas.getPattern(evaluated.get<BackgroundPattern>().from.id());
-        optional<ImagePosition> imagePosB = parameters.patternAtlas.getPattern(evaluated.get<BackgroundPattern>().to.id());
+        optional<ImagePosition> imagePosA =
+            parameters.patternAtlas.getPattern(evaluated.get<BackgroundPattern>().from.id());
+        optional<ImagePosition> imagePosB =
+            parameters.patternAtlas.getPattern(evaluated.get<BackgroundPattern>().to.id());
 
         if (!imagePosA || !imagePosB)
             return;

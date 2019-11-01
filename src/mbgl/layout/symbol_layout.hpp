@@ -28,7 +28,7 @@ public:
                  const std::vector<Immutable<style::LayerProperties>>&,
                  std::unique_ptr<GeometryTileLayer>,
                  const LayoutParameters& parameters);
-    
+
     ~SymbolLayout() final = default;
 
     void prepareSymbols(const GlyphMap&, const GlyphPositions&,

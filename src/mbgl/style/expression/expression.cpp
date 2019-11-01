@@ -25,7 +25,7 @@ public:
         return optional<mbgl::Value>();
     }
 };
-      
+
 EvaluationResult Expression::evaluate(optional<float> zoom,
                                       const Feature& feature,
                                       optional<double> colorRampParameter,

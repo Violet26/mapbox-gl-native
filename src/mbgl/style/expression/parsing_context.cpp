@@ -4,16 +4,15 @@
 #include <mbgl/style/expression/is_constant.hpp>
 #include <mbgl/style/expression/type.hpp>
 
-#include <mbgl/style/expression/expression.hpp>
-#include <mbgl/style/expression/at.hpp>
 #include <mbgl/style/expression/assertion.hpp>
+#include <mbgl/style/expression/at.hpp>
 #include <mbgl/style/expression/boolean_operator.hpp>
 #include <mbgl/style/expression/case.hpp>
 #include <mbgl/style/expression/coalesce.hpp>
 #include <mbgl/style/expression/coercion.hpp>
-#include <mbgl/style/expression/compound_expression.hpp>
 #include <mbgl/style/expression/comparison.hpp>
-#include <mbgl/style/expression/number_format.hpp>
+#include <mbgl/style/expression/compound_expression.hpp>
+#include <mbgl/style/expression/expression.hpp>
 #include <mbgl/style/expression/format_expression.hpp>
 #include <mbgl/style/expression/image_expression.hpp>
 #include <mbgl/style/expression/interpolate.hpp>
@@ -21,6 +20,7 @@
 #include <mbgl/style/expression/let.hpp>
 #include <mbgl/style/expression/literal.hpp>
 #include <mbgl/style/expression/match.hpp>
+#include <mbgl/style/expression/number_format.hpp>
 #include <mbgl/style/expression/step.hpp>
 
 #include <mbgl/style/expression/find_zoom_curve.hpp>
@@ -194,7 +194,8 @@ ParseResult ParsingContext::parse(const Convertible& value, optional<TypeAnnotat
         const type::Type actual = (*parsed)->getType();
         if ((*expected == type::String || *expected == type::Number || *expected == type::Boolean || *expected == type::Object || expected->is<type::Array>()) && actual == type::Value) {
             parsed = { annotate(std::move(*parsed), *expected, typeAnnotationOption.value_or(TypeAnnotationOption::assert)) };
-        } else if ((*expected == type::Color || *expected == type::Formatted || *expected == type::Image) && (actual == type::Value || actual == type::String)) {
+        } else if ((*expected == type::Color || *expected == type::Formatted || *expected == type::Image) &&
+                   (actual == type::Value || actual == type::String)) {
             parsed = { annotate(std::move(*parsed), *expected, typeAnnotationOption.value_or(TypeAnnotationOption::coerce)) };
         } else {
             checkType((*parsed)->getType());

@@ -1,18 +1,14 @@
-#include <mbgl/style/expression/image.hpp>
-#include <mbgl/style/conversion_impl.hpp>
 #include <mbgl/style/conversion/constant.hpp>
+#include <mbgl/style/conversion_impl.hpp>
+#include <mbgl/style/expression/image.hpp>
 
 namespace mbgl {
 namespace style {
 namespace expression {
 
-Image::Image(std::string imageID_, bool available_)
-    : imageID(std::move(imageID_))
-    , available(available_)
-{}
+Image::Image(std::string imageID_, bool available_) : imageID(std::move(imageID_)), available(available_) {}
 
-Image::Image(std::string imageID_) : Image(std::move(imageID_), false) {
-}
+Image::Image(std::string imageID_) : Image(std::move(imageID_), false) {}
 
 Image::Image(const char* imageID_) : Image(std::string(imageID_)) {
     assert(imageID_);
@@ -23,7 +19,7 @@ bool Image::operator==(const Image& other) const {
 }
 
 mbgl::Value Image::serialize() const {
-    return mapbox::base::ValueObject {{"name", imageID}, {"available", available}};
+    return mapbox::base::ValueObject{{"name", imageID}, {"available", available}};
 }
 
 const std::string& Image::id() const {
@@ -69,4 +65,3 @@ optional<Image> Converter<Image>::operator()(const Convertible& value, Error& er
 } // namespace conversion
 } // namespace style
 } // namespace mbgl
-

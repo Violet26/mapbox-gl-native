@@ -74,7 +74,7 @@ struct FormattedType {
 };
 
 struct ImageType {
-    constexpr ImageType() {}; // NOLINT
+    constexpr ImageType(){}; // NOLINT
     std::string getName() const { return "resolvedImage"; }
     bool operator==(const ImageType&) const { return true; }
 };
@@ -93,19 +93,18 @@ constexpr ImageType Image;
 
 struct Array;
 
-using Type = variant<
-    NullType,
-    NumberType,
-    BooleanType,
-    StringType,
-    ColorType,
-    ObjectType,
-    ValueType,
-    mapbox::util::recursive_wrapper<Array>,
-    CollatorType,
-    FormattedType,
-    ErrorType,
-    ImageType>;
+using Type = variant<NullType,
+                     NumberType,
+                     BooleanType,
+                     StringType,
+                     ColorType,
+                     ObjectType,
+                     ValueType,
+                     mapbox::util::recursive_wrapper<Array>,
+                     CollatorType,
+                     FormattedType,
+                     ErrorType,
+                     ImageType>;
 
 struct Array {
     explicit Array(Type itemType_) : itemType(std::move(itemType_)) {}

@@ -97,6 +97,8 @@ void writeTestData(const JSDocument& document, const std::string& rootPath, cons
 } // namespace
 
 TestRunOutput runExpressionTest(TestData& data, const std::string& rootPath, const std::string& id) {
+    // TODO: make issue in gl-js, available images should be part of expression evaluation input.
+    static const std::set<std::string> kAvailableImages = {"monument-15"};
     TestRunOutput output(id);
     const auto evaluateExpression = [&data](std::unique_ptr<style::expression::Expression>& expression,
                                             TestResult& result) {
@@ -104,7 +106,7 @@ TestRunOutput runExpressionTest(TestData& data, const std::string& rootPath, con
         std::vector<Value> outputs;
         if (!data.inputs.empty()) {
             for (const auto& input : data.inputs) {
-                auto evaluationResult = expression->evaluate(input.zoom, input.feature, input.heatmapDensity);
+                auto evaluationResult = expression->evaluate(input.zoom, input.feature, input.heatmapDensity, kAvailableImages);
                 if (!evaluationResult) {
                     std::unordered_map<std::string, Value> error{{"error", Value{evaluationResult.error().message}}};
                     outputs.emplace_back(Value{std::move(error)});

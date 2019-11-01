@@ -181,7 +181,10 @@ public:
     Kind getKind() const { return kind; };
     type::Type getType() const { return type; };
     
-    EvaluationResult evaluate(optional<float> zoom, const Feature& feature, optional<double> colorRampParameter) const;
+    EvaluationResult evaluate(optional<float> zoom,
+                              const Feature& feature,
+                              optional<double> colorRampParameter,
+                              const std::set<std::string>& availableImages = {}) const;
     EvaluationResult evaluate(optional<mbgl::Value> accumulated, const Feature& feature) const;
     /**
      * Statically analyze the expression, attempting to enumerate possible outputs. Returns

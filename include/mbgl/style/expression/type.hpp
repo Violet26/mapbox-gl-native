@@ -75,7 +75,7 @@ struct FormattedType {
 
 struct ImageType {
     constexpr ImageType() {}; // NOLINT
-    std::string getName() const { return "image"; }
+    std::string getName() const { return "resolvedImage"; }
     bool operator==(const ImageType&) const { return true; }
 };
 

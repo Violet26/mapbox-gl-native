@@ -23,7 +23,7 @@ bool Image::operator==(const Image& other) const {
 }
 
 mbgl::Value Image::serialize() const {
-    return mapbox::base::ValueArray {"image", imageID};
+    return mapbox::base::ValueObject {{"name", imageID}, {"available", available}};
 }
 
 const std::string& Image::id() const {

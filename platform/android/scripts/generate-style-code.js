@@ -72,7 +72,7 @@ global.propertyType = function propertyType(property) {
       case 'formatted':
         return 'Formatted';
       case 'string':
-      case 'image': // TODO: replace once we implement image expressions
+      case 'resolvedImage': // TODO: replace once we implement image expressions
         return 'String';
       case 'enum':
         return 'String';
@@ -94,7 +94,7 @@ global.propertyJavaType = function propertyType(property) {
        case 'formatted':
          return 'Formatted';
        case 'string':
-       case 'image': // TODO: replace once we implement image expressions
+       case 'resolvedImage': // TODO: replace once we implement image expressions
          return 'String';
        case 'enum':
          return 'String';
@@ -143,7 +143,7 @@ global.propertyNativeType = function (property) {
     return 'float';
   case 'formatted':
   case 'string':
-  case 'image': // TODO: replace once we implement image expressions
+  case 'resolvedImage': // TODO: replace once we implement image expressions
     return 'std::string';
   case 'enum':
     if(property['light-property']){
@@ -207,7 +207,7 @@ global.defaultValueJava = function(property) {
       case 'formatted':
         return 'new Formatted(new FormattedSection("default"))'
       case 'string':
-      case 'image': // TODO: replace once we implement image expressions
+      case 'resolvedImage': // TODO: replace once we implement image expressions
         return '"' + property['default'] + '"';
       case 'enum':
         return snakeCaseUpper(property.name) + "_" + snakeCaseUpper(Object.keys(property.values)[0]);
